@@ -4,15 +4,20 @@ import 'package:core/styles/text_styles.dart';
 import 'package:core/utils/state_enum.dart';
 import 'package:core/utils/urls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../domain/entities/genre.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/entities/movie_detail.dart';
+import '../../domain/entities/video_results.dart';
 import '../provider/movie_detail_notifier.dart';
 import '../widgets/minimal_detail.dart';
 import '../widgets/trailer_view.dart';
+
+bool _trailerIsShowing = false;
 
 class MovieDetailPage extends StatefulWidget {
   static const routeName = '/movie-detail';
@@ -25,6 +30,7 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
+
   @override
   void initState() {
     super.initState();
@@ -45,11 +51,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.movieState == RequestState.loaded) {
             final movie = provider.movie;
+
             return MovieDetailContent(
               movie: movie,
               recommendations: provider.recommendations,
               isAddedToWatchlist: provider.isAddedToWatchlist,
             );
+
           } else {
             return Text(provider.message);
           }
@@ -57,18 +65,26 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       ),
     );
   }
+
 }
 
-class MovieDetailContent extends StatelessWidget {
+class MovieDetailContent extends StatefulWidget {
   final MovieDetail movie;
   final List<Movie> recommendations;
   final bool isAddedToWatchlist;
+
   const MovieDetailContent({
     Key? key,
     required this.movie,
     required this.recommendations,
     required this.isAddedToWatchlist,
   }) : super(key: key);
+
+  @override
+  State<MovieDetailContent> createState() => _MovieDetailContentState();
+}
+
+class _MovieDetailContentState extends State<MovieDetailContent> {
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +116,7 @@ class MovieDetailContent extends StatelessWidget {
                 blendMode: BlendMode.dstIn,
                 child: CachedNetworkImage(
                   width: MediaQuery.of(context).size.width,
-                  imageUrl: Urls.imageUrl(movie.backdropPath!),
+                  imageUrl: Urls.imageUrl(widget.movie.backdropPath!),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -117,7 +133,7 @@ class MovieDetailContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title,
+                    widget.movie.title,
                     style: kHeading5.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.2,
@@ -136,7 +152,7 @@ class MovieDetailContent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
-                          movie.releaseDate.split('-')[1] + '-' + movie.releaseDate.split('-')[0],
+                          widget.movie.releaseDate.split('-')[1] + '-' + widget.movie.releaseDate.split('-')[0],
                           // movie.releaseDate,
                           style: const TextStyle(
                             fontSize: 16.0,
@@ -154,7 +170,7 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           const SizedBox(width: 4.0),
                           Text(
-                            (movie.voteAverage / 2).toStringAsFixed(1),
+                            (widget.movie.voteAverage / 2).toStringAsFixed(1),
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500,
@@ -166,7 +182,7 @@ class MovieDetailContent extends StatelessWidget {
                       ),
                       const SizedBox(width: 5.0),
                       Text(
-                        _showDuration(movie.runtime),
+                        _showDuration(widget.movie.runtime),
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 16.0,
@@ -177,23 +193,27 @@ class MovieDetailContent extends StatelessWidget {
                       const SizedBox(width: 10.0),
                       ElevatedButton(
                         // key: const Key('movieToWatchlist'),
-                        onPressed: () async {
-                          showModalBottomSheet(
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10.0),
-                                  topRight: Radius.circular(10.0),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) {
-                                return TrailerView(
-                                  keyValue: 'goToMovieDetail',
-                                  closeKeyValue: 'closeMovieMinimalDetail',
-                                  videoUrl: _movieTrailer('code', movie.videos)
-                                );
-                              },
-                            );
+                        onPressed: () {
+                          setState((){
+                            _trailerIsShowing = !_trailerIsShowing;
+                          });
+                          
+                          // showModalBottomSheet(
+                          //     shape: const RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.only(
+                          //         topLeft: Radius.circular(10.0),
+                          //         topRight: Radius.circular(10.0),
+                          //       ),
+                          //     ),
+                          //     context: context,
+                          //     builder: (context) {
+                          //       return TrailerView(
+                          //         keyValue: 'goToMovieDetail',
+                          //         closeKeyValue: 'closeMovieMinimalDetail',
+                          //         videoUrl: _movieTrailer('code', movie.videos)
+                          //       );
+                          //     },
+                          //   );
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -220,19 +240,53 @@ class MovieDetailContent extends StatelessWidget {
 
                   const SizedBox(height: 16.0),
                   
+                  Visibility(
+                    visible: _trailerIsShowing,
+                    child: YoutubePlayerBuilder(
+                      onExitFullScreen: () {
+                        // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
+                        SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+                      },
+                      player: YoutubePlayer(
+                        controller: YoutubePlayerController(
+                          initialVideoId: _trailerId(widget.movie.videos), //Add videoID.
+                          // initialVideoId: 'TbM-zWIkj_o',
+                          flags: const YoutubePlayerFlags(
+                            hideControls: false,
+                            controlsVisibleAtStart: true,
+                            autoPlay: true,
+                            mute: false,
+                            disableDragSeek: false,
+                          ),
+                        ),
+                        showVideoProgressIndicator: true,
+                        progressColors: const ProgressBarColors(
+                          playedColor: Colors.red,
+                          handleColor: Colors.redAccent,
+                        ),
+                      ), 
+                      builder: (context , player ) { 
+                        return Column(
+                          children: [
+                            player
+                          ],
+                        );
+                       },
+                    )
+                  ),
 
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     key: const Key('movieToWatchlist'),
                     onPressed: () async {
-                      if (!isAddedToWatchlist) {
+                      if (!widget.isAddedToWatchlist) {
                         await Provider.of<MovieDetailNotifier>(context,
                                 listen: false)
-                            .addToWatchlist(movie);
+                            .addToWatchlist(widget.movie);
                       } else {
                         await Provider.of<MovieDetailNotifier>(context,
                                 listen: false)
-                            .removeFromWatchlist(movie);
+                            .removeFromWatchlist(widget.movie);
                       }
 
                       final message = Provider.of<MovieDetailNotifier>(context,
@@ -260,16 +314,16 @@ class MovieDetailContent extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        isAddedToWatchlist
+                        widget.isAddedToWatchlist
                             ? const Icon(Icons.check, color: Colors.white)
                             : const Icon(Icons.add, color: Colors.black),
                         const SizedBox(width: 16.0),
                         Text(
-                          isAddedToWatchlist
+                          widget.isAddedToWatchlist
                               ? 'Added to watchlist'
                               : 'Add to watchlist',
                           style: TextStyle(
-                            color: isAddedToWatchlist
+                            color: widget.isAddedToWatchlist
                                 ? Colors.white
                                 : Colors.black,
                           ),
@@ -278,7 +332,7 @@ class MovieDetailContent extends StatelessWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                       primary:
-                          isAddedToWatchlist ? Colors.grey[850] : Colors.white,
+                          widget.isAddedToWatchlist ? Colors.grey[850] : Colors.white,
                       minimumSize: Size(
                         MediaQuery.of(context).size.width,
                         42.0,
@@ -287,7 +341,7 @@ class MovieDetailContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   Text(
-                    movie.overview,
+                    widget.movie.overview,
                     style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
@@ -296,7 +350,7 @@ class MovieDetailContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Genres: ${_showGenres(movie.genres)}',
+                    'Genres: ${_showGenres(widget.movie.genres)}',
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 12.0,
@@ -346,6 +400,20 @@ class MovieDetailContent extends StatelessWidget {
     }
 
     return result.substring(0, result.length - 2);
+  }
+
+  //Get Trailer Video Youtube ID
+  String _trailerId(videos) {
+    // ignore: prefer_typing_uninitialized_variables
+    var finalResult;
+    for(var i = 0; i < videos.results.length; i++){
+      if(videos.results[i].type == 'Trailer'){
+        finalResult = videos.results[i];
+      }
+    }
+    
+    return finalResult.key.toString();
+    
   }
 
   //Takes in movie.videos

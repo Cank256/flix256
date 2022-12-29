@@ -61,22 +61,22 @@ class TrailerView extends StatelessWidget {
                 SystemChrome.setPreferredOrientations(DeviceOrientation.values);
               },
               player: YoutubePlayer(
-              controller: YoutubePlayerController(
-                initialVideoId: videoUrl, //Add videoID.
-                flags: const YoutubePlayerFlags(
-                  hideControls: false,
-                  controlsVisibleAtStart: true,
-                  autoPlay: true,
-                  mute: false,
-                  disableDragSeek: false,
+                controller: YoutubePlayerController(
+                  initialVideoId: videoUrl, //Add videoID.
+                  flags: const YoutubePlayerFlags(
+                    hideControls: false,
+                    controlsVisibleAtStart: true,
+                    autoPlay: true,
+                    mute: false,
+                    disableDragSeek: false,
+                  ),
                 ),
-              ),
-              showVideoProgressIndicator: true,
-              progressColors: const ProgressBarColors(
-                playedColor: Colors.red,
-                handleColor: Colors.redAccent,
-              ),
-            ), 
+                showVideoProgressIndicator: true,
+                progressColors: const ProgressBarColors(
+                  playedColor: Colors.red,
+                  handleColor: Colors.redAccent,
+                ),
+              ), 
             builder: (context , player ) { 
               return Column(
                 children: [
