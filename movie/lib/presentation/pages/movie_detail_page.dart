@@ -5,7 +5,6 @@ import 'package:core/utils/state_enum.dart';
 import 'package:core/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:movie/presentation/pages/trailer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -13,9 +12,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../domain/entities/genre.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/entities/movie_detail.dart';
-// import '../../domain/entities/video_results.dart';
 import '../provider/movie_detail_notifier.dart';
 import '../widgets/minimal_detail.dart';
+import 'trailer_view.dart';
 
 bool _trailerIsShowing = false;
 
@@ -412,12 +411,13 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
   }
 
   showTrailer(videos){
-    // var videoId = _trailerId(videos);
+    var videoId = _trailerId(videos);
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return const Dialog(
-          child: TrailerWidget(videoId: 'GQyWIur03aw'),
+          // child: TrailerWidget(videoId: 'GQyWIur03aw'),
+          child: TrailerView(videoUrl: 'GQyWIur03aw'),
         );
       }
     );
