@@ -415,9 +415,9 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const Dialog(
-          // child: TrailerWidget(videoId: 'GQyWIur03aw'),
-          child: TrailerView(videoUrl: 'GQyWIur03aw'),
+        return Dialog(
+          // child: TrailerView(videoUrl: 'GQyWIur03aw'),
+          child: TrailerView(videoUrl: videoId),
         );
       }
     );
