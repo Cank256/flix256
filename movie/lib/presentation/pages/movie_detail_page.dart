@@ -84,6 +84,14 @@ class MovieDetailContent extends StatefulWidget {
 }
 
 class _MovieDetailContentState extends State<MovieDetailContent> {
+  late YoutubePlayerController _controller;
+  late bool _fullScreen = false;
+
+  void listener() {
+      setState(() {
+        _fullScreen = _controller.value.isFullScreen;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +248,7 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
                             mute: false,
                             disableDragSeek: false,
                           ),
-                        ),
+                        )..addListener(listener),
                         showVideoProgressIndicator: true,
                         progressColors: const ProgressBarColors(
                           playedColor: Colors.red,
