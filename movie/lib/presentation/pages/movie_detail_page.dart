@@ -12,10 +12,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../domain/entities/genre.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/entities/movie_detail.dart';
-import '../../domain/entities/video_results.dart';
+// import '../../domain/entities/video_results.dart';
 import '../provider/movie_detail_notifier.dart';
 import '../widgets/minimal_detail.dart';
-import '../widgets/trailer_view.dart';
 
 bool _trailerIsShowing = false;
 
@@ -197,23 +196,6 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
                           setState((){
                             _trailerIsShowing = !_trailerIsShowing;
                           });
-                          
-                          // showModalBottomSheet(
-                          //     shape: const RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.only(
-                          //         topLeft: Radius.circular(10.0),
-                          //         topRight: Radius.circular(10.0),
-                          //       ),
-                          //     ),
-                          //     context: context,
-                          //     builder: (context) {
-                          //       return TrailerView(
-                          //         keyValue: 'goToMovieDetail',
-                          //         closeKeyValue: 'closeMovieMinimalDetail',
-                          //         videoUrl: _movieTrailer('code', movie.videos)
-                          //       );
-                          //     },
-                          //   );
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -413,24 +395,6 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
     }
     
     return finalResult.key.toString();
-    
-  }
-
-  //Takes in movie.videos
-  String _movieTrailer(String type, videos) {
-    // ignore: prefer_typing_uninitialized_variables
-    var finalResult;
-    for(var i = 0; i < videos.results.length; i++){
-      if(videos.results[i].type == 'Trailer'){
-        finalResult = videos.results[i];
-      }
-    }
-    if(type == 'url'){
-      return 'https://www.youtube.com/watch?v=' + finalResult.key.toString();
-    }
-    else{
-      return finalResult.key.toString();
-    }
     
   }
 
