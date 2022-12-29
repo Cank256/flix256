@@ -5,6 +5,7 @@ import 'package:core/utils/state_enum.dart';
 import 'package:core/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:movie/presentation/pages/trailer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -84,14 +85,6 @@ class MovieDetailContent extends StatefulWidget {
 }
 
 class _MovieDetailContentState extends State<MovieDetailContent> {
-  late YoutubePlayerController _controller;
-  late bool _fullScreen = false;
-
-  void listener() {
-      setState(() {
-        _fullScreen = _controller.value.isFullScreen;
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,11 +193,12 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
                       const SizedBox(width: 10.0),
                       ElevatedButton(
                         // key: const Key('movieToWatchlist'),
-                        onPressed: () {
-                          setState((){
-                            _trailerIsShowing = !_trailerIsShowing;
-                          });
-                        },
+                        // onPressed: () {
+                        //   setState((){
+                        //     _trailerIsShowing = !_trailerIsShowing;
+                        //   });
+                        // },
+                        onPressed: () => showTrailer(widget.movie.videos),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
@@ -248,7 +242,7 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
                             mute: false,
                             disableDragSeek: false,
                           ),
-                        )..addListener(listener),
+                        ),
                         showVideoProgressIndicator: true,
                         progressColors: const ProgressBarColors(
                           playedColor: Colors.red,
@@ -257,9 +251,7 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
                       ), 
                       builder: (context , player ) { 
                         return Column(
-                          children: [
-                            player
-                          ],
+                          children: [],
                         );
                        },
                     )
@@ -392,6 +384,19 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
     return result.substring(0, result.length - 2);
   }
 
+  
+
+  String _showDuration(int runtime) {
+    final int hours = runtime ~/ 60;
+    final int minutes = runtime % 60;
+
+    if (hours > 0) {
+      return '${hours}h ${minutes}m';
+    } else {
+      return '${minutes}m';
+    }
+  }
+
   //Get Trailer Video Youtube ID
   String _trailerId(videos) {
     // ignore: prefer_typing_uninitialized_variables
@@ -406,15 +411,16 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
     
   }
 
-  String _showDuration(int runtime) {
-    final int hours = runtime ~/ 60;
-    final int minutes = runtime % 60;
-
-    if (hours > 0) {
-      return '${hours}h ${minutes}m';
-    } else {
-      return '${minutes}m';
-    }
+  showTrailer(videos){
+    // var videoId = _trailerId(videos);
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: TrailerWidget(videoId: 'GQyWIur03aw'),
+        );
+      }
+    );
   }
 
   Widget _showRecommendations() {
