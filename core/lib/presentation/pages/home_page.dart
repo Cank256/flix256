@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           backgroundColor: Colors.white,
                         ),
                       ),
-                      // const SizedBox(height: 128.0),
+                      const SizedBox(height: 128.0),
                       // Row(
                       //   children: [
                       //     Expanded(
@@ -117,13 +117,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       //         crossAxisAlignment: CrossAxisAlignment.start,
                       //         children: [
                       //           Text(
-                      //             'Abu Aziz',
+                      //             'Caleb Nkunze',
                       //             style: kHeading6.copyWith(
                       //               fontSize: 16.0,
                       //             ),
                       //           ),
                       //           Text(
-                      //             'abuaziz@mail.co',
+                      //             'nkunzecaleb@gmail.com',
                       //             style: kBodyText.copyWith(
                       //               color: Colors.white70,
                       //             ),
@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.pushNamed(context, WatchlistPage.routeName);
                         },
-                        leading: const Icon(Icons.save_alt),
+                        leading: const Icon(Icons.list_alt),
                         title: const Text('Watchlist'),
                         iconColor: Colors.white70,
                         textColor: Colors.white70,
