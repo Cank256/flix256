@@ -4,7 +4,8 @@ class Urls {
 
   /// Movies
   static const String nowPlayingMovies = '$baseUrl/movie/now_playing?$apiKey&lang=en';
-  static const String upcomingMovies = '$baseUrl/movie/upcoming?$apiKey&lang=en';
+  //Upcoming Movies with Region set to USA
+  static const String upcomingMovies = '$baseUrl/movie/upcoming?$apiKey&lang=en&region=US';
   static const String popularMovies = '$baseUrl/movie/popular?$apiKey&lang=en';
   static const String topRatedMovies = '$baseUrl/movie/top_rated?$apiKey&lang=en';
   static String movieDetail(int id) => '$baseUrl/movie/$id?$apiKey&append_to_response=videos';

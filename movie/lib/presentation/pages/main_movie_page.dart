@@ -40,6 +40,8 @@ class _MainMoviePageState extends State<MainMoviePage> {
             ),
           );
       Provider.of<MovieListNotifier>(context, listen: false)
+          .fetchUpcomingMovies();
+      Provider.of<MovieListNotifier>(context, listen: false)
           .fetchPopularMovies();
       Provider.of<MovieListNotifier>(context, listen: false)
           .fetchTopRatedMovies();
