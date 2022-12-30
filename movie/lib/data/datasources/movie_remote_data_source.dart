@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:core/utils/exception.dart';
 import 'package:core/utils/urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../models/media_image_model.dart';
 import '../models/movie_detail_response.dart';
@@ -38,7 +39,14 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> getUpcomingMovies() async {
-    final response = await client.get(Uri.parse(Urls.upcomingMovies));
+    DateTime today = DateTime.now();
+    String todayFormatted = DateFormat('yyyy-MM-dd').format(today);
+    DateTime sixMonthsFromNow = today.add(const Duration(hours: 4380));
+    String sixMonthsFromNowFormatted = DateFormat('yyyy-MM-dd').format(sixMonthsFromNow);
+    var url = Urls.baseUrl+'/discover/movie?'+Urls.apiKey+'&primary_release_date.gte=$todayFormatted&primary_release_date.lte=$sixMonthsFromNowFormatted';
+
+    // final response = await client.get(Uri.parse(Urls.upcomingMovies));
+    final response = await client.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;

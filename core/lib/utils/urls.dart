@@ -1,7 +1,7 @@
 class Urls {
   static const String baseUrl = 'https://api.themoviedb.org/3';
   static const String apiKey = 'api_key=ff6cc53a2ac35d044a5a0b095748a152';
-
+  
   /// Movies
   static const String nowPlayingMovies = '$baseUrl/movie/now_playing?$apiKey&lang=en';
   //Upcoming Movies with Region set to USA
