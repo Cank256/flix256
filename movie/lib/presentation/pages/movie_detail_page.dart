@@ -416,7 +416,6 @@ class _MovieDetailContentState extends State<MovieDetailContent> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          // child: TrailerView(videoUrl: 'GQyWIur03aw'),
           child: TrailerView(videoUrl: videoId),
         );
       }

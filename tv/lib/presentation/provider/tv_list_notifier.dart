@@ -37,13 +37,13 @@ class TvListNotifier extends ChangeNotifier {
   String get message => _message;
 
   final GetOnTheAirTvs getOnTheAirTvs;
-  final GetShowingTodayTvs getShowingTodayTvs;
+  // final GetShowingTodayTvs getShowingTodayTvs;
   final GetPopularTvs getPopularTvs;
   final GetTopRatedTvs getTopRatedTvs;
 
   TvListNotifier({
     required this.getOnTheAirTvs,
-    required this.getShowingTodayTvs,
+    // required this.getShowingTodayTvs,
     required this.getPopularTvs,
     required this.getTopRatedTvs,
   });
@@ -67,24 +67,24 @@ class TvListNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchShowingTodayTvs() async {
-    _showingTodayTvsState = RequestState.loading;
-    notifyListeners();
+  // Future<void> fetchShowingTodayTvs() async {
+  //   _showingTodayTvsState = RequestState.loading;
+  //   notifyListeners();
 
-    final result = await getShowingTodayTvs.execute();
-    result.fold(
-      (failure) {
-        _showingTodayTvsState = RequestState.error;
-        _message = failure.message;
-        notifyListeners();
-      },
-      (tvsData) {
-        _showingTodayTvsState = RequestState.loaded;
-        _showingTodayTvs = tvsData;
-        notifyListeners();
-      },
-    );
-  }
+  //   final result = await getShowingTodayTvs.execute();
+  //   result.fold(
+  //     (failure) {
+  //       _showingTodayTvsState = RequestState.error;
+  //       _message = failure.message;
+  //       notifyListeners();
+  //     },
+  //     (tvsData) {
+  //       _showingTodayTvsState = RequestState.loaded;
+  //       _showingTodayTvs = tvsData;
+  //       notifyListeners();
+  //     },
+  //   );
+  // }
 
   Future<void> fetchPopularTvs() async {
     _popularTvsState = RequestState.loading;

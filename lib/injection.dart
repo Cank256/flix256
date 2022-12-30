@@ -108,7 +108,7 @@ void init() {
   locator.registerFactory(
     () => TvListNotifier(
       getOnTheAirTvs: locator(),
-      getShowingTodayTvs: locator(),
+      // getShowingTodayTvs: locator(),
       getPopularTvs: locator(),
       getTopRatedTvs: locator(),
     ),

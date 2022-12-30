@@ -38,7 +38,7 @@ class _MainTvPageState extends State<MainTvPage> {
                         .onTheAirTvs[0]
                         .id),
           );
-      Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
+      // Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchPopularTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchTopRatedTvs();
     });
