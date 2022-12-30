@@ -21,9 +21,9 @@ class AboutPage extends StatelessWidget {
                   color: kRichBlack,
                   child: const Center(
                     child: Text(
-                      'Flix 256',
+                      'Flix256',
                       style: TextStyle(
-                        fontSize: 45.0,
+                        fontSize: 50.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.redAccent,
                       ),
@@ -33,12 +33,12 @@ class AboutPage extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(10.0),
                   color: kRichBlack,
                   child: const Text(
-                    'Flix 256 is a movie and tv series catalog app.',
-                    style: TextStyle(fontSize: 16.0),
-                    textAlign: TextAlign.justify,
+                    'Flix256 is a movie and tv series catalog app. Get to know the upcoming, popular and airing movies and series',
+                    style: TextStyle(fontSize: 25.0),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
