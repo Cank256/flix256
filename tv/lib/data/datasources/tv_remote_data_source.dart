@@ -15,9 +15,8 @@ import '../models/tv_season_episode_response.dart';
 abstract class TvRemoteDataSource {
   Future<List<TvModel>> getOnTheAirTvs();
   Future<List<TvModel>> getShowingTodayTvs();
-  Future<List<TvModel>> getUpcomingTvs();
-  Future<List<TvModel>> getPopularTvs();
   Future<List<TvModel>> getTopRatedTvs();
+  Future<List<TvModel>> getPopularTvs();
   Future<TvDetailResponse> getTvDetail(int id);
   Future<List<TvSeasonEpisodeModel>> getTvSeasonEpisodes(
       int id, int seasonNumber);
@@ -45,22 +44,6 @@ class TvRemoteDataSourceImpl implements TvRemoteDataSource {
   @override
   Future<List<TvModel>> getShowingTodayTvs() async {
     final response = await client.get(Uri.parse(Urls.onShowingTodayTvs));
-    if (response.statusCode == 200) {
-      return TvResponse.fromJson(json.decode(response.body)).tvList;
-    } else {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<List<TvModel>> getUpcomingTvs() async {
-    DateTime today = DateTime.now();
-    String todayFormatted = DateFormat('yyyy-MM-dd').format(today);
-    DateTime sixMonthsFromNow = today.add(const Duration(hours: 4380));
-    String sixMonthsFromNowFormatted = DateFormat('yyyy-MM-dd').format(sixMonthsFromNow);
-    var url = Urls.baseUrl+'/discover/movie?'+Urls.apiKey+'&primary_release_date.gte=$todayFormatted&primary_release_date.lte=$sixMonthsFromNowFormatted';
-
-    final response = await client.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return TvResponse.fromJson(json.decode(response.body)).tvList;
     } else {

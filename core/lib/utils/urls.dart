@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Urls {
   static const String baseUrl = 'https://api.themoviedb.org/3';
   static const String apiKey = 'api_key=ff6cc53a2ac35d044a5a0b095748a152';
@@ -17,6 +19,7 @@ class Urls {
   /// Tvs
   static const String onTheAirTvs = '$baseUrl/tv/on_the_air?$apiKey&lang=en';
   static const String onShowingTodayTvs = '$baseUrl/tv/airing_today?$apiKey&lang=en';
+  static String upcomingTvs = '$baseUrl/discover/tv?$apiKey&primary_release_date.gte='+DateFormat('yyyy-MM-dd').format(DateTime.now())+'&primary_release_date.lte='+DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(hours: 4380)));
   static const String popularTvs = '$baseUrl/tv/popular?$apiKey&lang=en';
   static const String topRatedTvs = '$baseUrl/tv/top_rated?$apiKey&lang=en';
   static String tvDetail(int id) => '$baseUrl/tv/$id?$apiKey&append_to_response=videos';

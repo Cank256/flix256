@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:tv/domain/entities/tv.dart' as _i7;
 import 'package:tv/domain/repositories/tv_repository.dart' as _i2;
 import 'package:tv/domain/usecases/get_on_the_air_tvs.dart' as _i4;
+import 'package:tv/domain/usecases/get_showing_today_tvs.dart' as _i10;
 import 'package:tv/domain/usecases/get_popular_tvs.dart' as _i8;
 import 'package:tv/domain/usecases/get_top_rated_tvs.dart' as _i9;
 
@@ -31,6 +32,23 @@ class _FakeEither_1<L, R> extends _i1.Fake implements _i3.Either<L, R> {}
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetOnTheAirTvs extends _i1.Mock implements _i4.GetOnTheAirTvs {
+  MockGetOnTheAirTvs() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.TvRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeTvRepository_0()) as _i2.TvRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Tv>>> execute() =>
+      (super.noSuchMethod(Invocation.method(#execute, []),
+              returnValue: Future<_i3.Either<_i6.Failure, List<_i7.Tv>>>.value(
+                  _FakeEither_1<_i6.Failure, List<_i7.Tv>>()))
+          as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Tv>>>);
+}
+
+class MockGetShowingTodayTvs extends _i1.Mock implements _i10.GetShowingTodayTvs {
   MockGetOnTheAirTvs() {
     _i1.throwOnMissingStub(this);
   }

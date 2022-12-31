@@ -7,15 +7,17 @@ import 'package:mockito/mockito.dart';
 import 'package:tv/domain/entities/tv.dart';
 import 'package:tv/domain/usecases/get_on_the_air_tvs.dart';
 import 'package:tv/domain/usecases/get_popular_tvs.dart';
+import 'package:tv/domain/usecases/get_showing_today_tvs.dart';
 import 'package:tv/domain/usecases/get_top_rated_tvs.dart';
 import 'package:tv/presentation/provider/tv_list_notifier.dart';
 
 import 'tv_list_notifier_test.mocks.dart';
 
-@GenerateMocks([GetOnTheAirTvs, GetPopularTvs, GetTopRatedTvs])
+@GenerateMocks([GetOnTheAirTvs, GetShowingTodayTvs, GetPopularTvs, GetTopRatedTvs])
 void main() {
   late int listenerCallCount;
   late MockGetOnTheAirTvs mockGetOnTheAirTvs;
+  late MockGetShowingTodayTvs mockGetShowingTodayTvs;
   late MockGetPopularTvs mockGetPopularTvs;
   late MockGetTopRatedTvs mockGetTopRatedTvs;
   late TvListNotifier provider;
@@ -23,10 +25,12 @@ void main() {
   setUp(() {
     listenerCallCount = 0;
     mockGetOnTheAirTvs = MockGetOnTheAirTvs();
+    mockGetShowingTodayTvs = MockGetShowingTodayTvs();
     mockGetPopularTvs = MockGetPopularTvs();
     mockGetTopRatedTvs = MockGetTopRatedTvs();
     provider = TvListNotifier(
       getOnTheAirTvs: mockGetOnTheAirTvs,
+      getShowingTodayTvs: mockGetShowingTodayTvs,
       getPopularTvs: mockGetPopularTvs,
       getTopRatedTvs: mockGetTopRatedTvs,
     )..addListener(() {

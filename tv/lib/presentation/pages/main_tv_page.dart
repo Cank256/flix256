@@ -6,7 +6,6 @@ import 'package:core/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tv/presentation/pages/showing_today_tvs_page.dart';
 
 import '../provider/tv_images_notifier.dart';
 import '../provider/tv_list_notifier.dart';
@@ -15,6 +14,7 @@ import '../widgets/horizontal_item_list.dart';
 import '../widgets/minimal_detail.dart';
 import '../widgets/sub_heading.dart';
 import 'popular_tvs_page.dart';
+import 'showing_today_tvs_page.dart';
 import 'top_rated_tvs_page.dart';
 
 class MainTvPage extends StatefulWidget {
@@ -38,8 +38,7 @@ class _MainTvPageState extends State<MainTvPage> {
                         .onTheAirTvs[0]
                         .id),
           );
-      Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
-      Provider.of<TvListNotifier>(context, listen: false).fetchUpcomingTvs();
+      // Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchPopularTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchTopRatedTvs();
     });
@@ -231,53 +230,6 @@ class _MainTvPageState extends State<MainTvPage> {
                   ),
                 );
               } else if (data.onTheAirTvsState == RequestState.error) {
-                return const Center(child: Text('Load data failed'));
-              } else {
-                return SizedBox(
-                  height: 170.0,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 5,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Shimmer.fromColors(
-                          child: Container(
-                            height: 170.0,
-                            width: 120.0,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          baseColor: Colors.grey[850]!,
-                          highlightColor: Colors.grey[800]!,
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-            }),
-            SubHeading(
-              valueKey: 'seeComingSoonTvs',
-              text: 'Coming Soon',
-              onSeeMoreTapped: () => Navigator.pushNamed(
-                context,
-                TopRatedTvsPage.routeName,
-              ),
-            ),
-            Consumer<TvListNotifier>(builder: (context, data, child) {
-              if (data.upcomingTvsState == RequestState.loaded) {
-                return FadeIn(
-                  duration: const Duration(milliseconds: 500),
-                  child: HorizontalItemList(
-                    tvs: data.upcomingTvs,
-                  ),
-                );
-              } else if (data.upcomingTvsState == RequestState.error) {
                 return const Center(child: Text('Load data failed'));
               } else {
                 return SizedBox(

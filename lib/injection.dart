@@ -41,7 +41,6 @@ import 'package:tv/domain/usecases/get_tv_images.dart';
 import 'package:tv/domain/usecases/get_tv_recommendations.dart';
 import 'package:tv/domain/usecases/get_tv_season_episodes.dart';
 import 'package:tv/domain/usecases/get_tv_watchlist_status.dart';
-import 'package:tv/domain/usecases/get_upcoming_tvs.dart';
 import 'package:tv/domain/usecases/get_watchlist_tvs.dart';
 import 'package:tv/domain/usecases/remove_watchlist_tv.dart';
 import 'package:tv/domain/usecases/save_watchlist_tv.dart';
@@ -110,7 +109,6 @@ void init() {
     () => TvListNotifier(
       getOnTheAirTvs: locator(),
       getShowingTodayTvs: locator(),
-      getUpcomingTvs: locator(),
       getPopularTvs: locator(),
       getTopRatedTvs: locator(),
     ),
@@ -169,7 +167,6 @@ void init() {
   locator.registerLazySingleton(() => GetOnTheAirTvs(locator()));
   locator.registerLazySingleton(() => GetPopularTvs(locator()));
   locator.registerLazySingleton(() => GetShowingTodayTvs(locator()));
-  locator.registerLazySingleton(() => GetUpcomingTvs(locator()));
   locator.registerLazySingleton(() => GetTopRatedTvs(locator()));
   locator.registerLazySingleton(() => GetTvDetail(locator()));
   locator.registerLazySingleton(() => GetTvSeasonEpisodes(locator()));
