@@ -38,7 +38,8 @@ class _MainTvPageState extends State<MainTvPage> {
                         .onTheAirTvs[0]
                         .id),
           );
-      // Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
+      Provider.of<TvListNotifier>(context, listen: false).fetchShowingTodayTvs();
+      Provider.of<TvListNotifier>(context, listen: false).fetchUpcomingTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchPopularTvs();
       Provider.of<TvListNotifier>(context, listen: false).fetchTopRatedTvs();
     });
@@ -222,14 +223,14 @@ class _MainTvPageState extends State<MainTvPage> {
               ),
             ),
             Consumer<TvListNotifier>(builder: (context, data, child) {
-              if (data.showingTodayTvsState == RequestState.loaded) {
+              if (data.onTheAirTvsState == RequestState.loaded) {
                 return FadeIn(
                   duration: const Duration(milliseconds: 500),
                   child: HorizontalItemList(
-                    tvs: data.showingTodayTvs,
+                    tvs: data.onTheAirTvs,
                   ),
                 );
-              } else if (data.showingTodayTvsState == RequestState.error) {
+              } else if (data.onTheAirTvsState == RequestState.error) {
                 return const Center(child: Text('Load data failed'));
               } else {
                 return SizedBox(
@@ -260,53 +261,53 @@ class _MainTvPageState extends State<MainTvPage> {
                 );
               }
             }),
-            // SubHeading(
-            //   valueKey: 'seeComingSoonTvs',
-            //   text: 'Coming Soon',
-            //   onSeeMoreTapped: () => Navigator.pushNamed(
-            //     context,
-            //     TopRatedTvsPage.routeName,
-            //   ),
-            // ),
-            // Consumer<TvListNotifier>(builder: (context, data, child) {
-            //   if (data.topRatedTvsState == RequestState.loaded) {
-            //     return FadeIn(
-            //       duration: const Duration(milliseconds: 500),
-            //       child: HorizontalItemList(
-            //         tvs: data.topRatedTvs,
-            //       ),
-            //     );
-            //   } else if (data.topRatedTvsState == RequestState.error) {
-            //     return const Center(child: Text('Load data failed'));
-            //   } else {
-            //     return SizedBox(
-            //       height: 170.0,
-            //       child: ListView.builder(
-            //         shrinkWrap: true,
-            //         itemCount: 5,
-            //         scrollDirection: Axis.horizontal,
-            //         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //         itemBuilder: (context, index) {
-            //           return Padding(
-            //             padding: const EdgeInsets.only(right: 8.0),
-            //             child: Shimmer.fromColors(
-            //               child: Container(
-            //                 height: 170.0,
-            //                 width: 120.0,
-            //                 decoration: BoxDecoration(
-            //                   color: Colors.black,
-            //                   borderRadius: BorderRadius.circular(8.0),
-            //                 ),
-            //               ),
-            //               baseColor: Colors.grey[850]!,
-            //               highlightColor: Colors.grey[800]!,
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     );
-            //   }
-            // }),
+            SubHeading(
+              valueKey: 'seeComingSoonTvs',
+              text: 'Coming Soon',
+              onSeeMoreTapped: () => Navigator.pushNamed(
+                context,
+                TopRatedTvsPage.routeName,
+              ),
+            ),
+            Consumer<TvListNotifier>(builder: (context, data, child) {
+              if (data.upcomingTvsState == RequestState.loaded) {
+                return FadeIn(
+                  duration: const Duration(milliseconds: 500),
+                  child: HorizontalItemList(
+                    tvs: data.upcomingTvs,
+                  ),
+                );
+              } else if (data.upcomingTvsState == RequestState.error) {
+                return const Center(child: Text('Load data failed'));
+              } else {
+                return SizedBox(
+                  height: 170.0,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Shimmer.fromColors(
+                          child: Container(
+                            height: 170.0,
+                            width: 120.0,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          baseColor: Colors.grey[850]!,
+                          highlightColor: Colors.grey[800]!,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            }),
             SubHeading(
               valueKey: 'seePopularTvs',
               text: 'Popular',

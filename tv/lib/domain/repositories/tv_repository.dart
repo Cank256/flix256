@@ -8,6 +8,7 @@ import '../entities/tv_season_episode.dart';
 abstract class TvRepository {
   Future<Either<Failure, List<Tv>>> getOnTheAirTvs();
   Future<Either<Failure, List<Tv>>> getShowingTodayTvs();
+  Future<Either<Failure, List<Tv>>> getUpcomingTvs();
   Future<Either<Failure, List<Tv>>> getPopularTvs();
   Future<Either<Failure, List<Tv>>> getTopRatedTvs();
   Future<Either<Failure, TvDetail>> getTvDetail(int id);
