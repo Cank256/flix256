@@ -21,7 +21,7 @@ class MinimalDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300.0,
+      height: 310.0,
       child: Column(
         children: [
           Padding(
